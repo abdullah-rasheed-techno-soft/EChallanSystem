@@ -55,7 +55,7 @@ namespace EChallanSystem.Models
                 {
                     Id = 1,
                     UserId = 2,
-
+                     
                 });
                 b.OwnsOne(c => c.User).HasData(new
                 {
