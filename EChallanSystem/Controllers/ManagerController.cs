@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EChallanSystem.Controllers
 {
-    [Route("api/[controller]")] 
+    [Route("api/[controller]/[action]")] 
     [ApiController]
     public class ManagerController : ControllerBase
     {
@@ -16,11 +16,26 @@ namespace EChallanSystem.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<Manager>> Get()
+        public async Task<ActionResult<List<Manager>>> GetManagers()
         {
-            return Ok(await _context.Managers.ToListAsync());
+            return Ok(await _context.Managers.Include(c=>c.User).ToListAsync());
         }
-       
+        [HttpGet]
+        public async Task<ActionResult<List<ApplicationUser>>> GetManagersBy()
+        {
+            return Ok(await _context.ApplicationUsers.Where(c=>c.Role=="Manager").ToListAsync());
+        }
+        //[HttpGet]  
+        //public async Task<ActionResult<TrafficWarden>> GetTrafficWardens()
+        //{
+        //    return Ok(await _context.TrafficWardens.Include(c => c.UserId).ToListAsync());
+        //}
+        //[HttpGet]
+        //public async Task<ActionResult<Citizen>> GetCitizens()
+        //{
+        //    return Ok(await _context.Citizens.Include(c => c.UserId).ToListAsync());
+        //}
+
     }
 }
  

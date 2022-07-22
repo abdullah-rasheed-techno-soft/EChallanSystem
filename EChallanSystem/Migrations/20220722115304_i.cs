@@ -16,7 +16,7 @@ namespace EChallanSystem.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Role = table.Column<int>(type: "int", nullable: false)
+                    Role = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -122,7 +122,7 @@ namespace EChallanSystem.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Chall",
+                name: "Challans",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -134,15 +134,15 @@ namespace EChallanSystem.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Chall", x => x.Id);
+                    table.PrimaryKey("PK_Challans", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Chall_TrafficWardens_TrafficWardenId",
+                        name: "FK_Challans_TrafficWardens_TrafficWardenId",
                         column: x => x.TrafficWardenId,
                         principalTable: "TrafficWardens",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Chall_Vehicles_VehicleId",
+                        name: "FK_Challans_Vehicles_VehicleId",
                         column: x => x.VehicleId,
                         principalTable: "Vehicles",
                         principalColumn: "Id",
@@ -150,19 +150,19 @@ namespace EChallanSystem.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Chall_TrafficWardenId",
-                table: "Chall",
-                column: "TrafficWardenId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Chall_VehicleId",
-                table: "Chall",
-                column: "VehicleId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_ChallanEmails_CitizenId",
                 table: "ChallanEmails",
                 column: "CitizenId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Challans_TrafficWardenId",
+                table: "Challans",
+                column: "TrafficWardenId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Challans_VehicleId",
+                table: "Challans",
+                column: "VehicleId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Citizens_UserId",
@@ -188,10 +188,10 @@ namespace EChallanSystem.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Chall");
+                name: "ChallanEmails");
 
             migrationBuilder.DropTable(
-                name: "ChallanEmails");
+                name: "Challans");
 
             migrationBuilder.DropTable(
                 name: "Managers");

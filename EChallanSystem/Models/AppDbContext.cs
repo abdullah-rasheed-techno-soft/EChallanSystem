@@ -11,7 +11,7 @@ namespace EChallanSystem.Models
         public DbSet<Manager> Managers { get; set; }
         public DbSet<Citizen> Citizens { get; set; }
         public DbSet<TrafficWarden> TrafficWardens { get; set; }
-        public DbSet<Challan> Chall { get; set; }
+        public DbSet<Challan> Challans { get; set; }
         public DbSet<Vehicle> Vehicles { get; set; }
         public DbSet<ChallanEmail> ChallanEmails { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }

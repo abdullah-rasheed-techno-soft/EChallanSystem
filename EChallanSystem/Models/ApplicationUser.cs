@@ -11,12 +11,12 @@ namespace EChallanSystem.Models
         [Required]
         public string? Email { get; set; }
         [Required]
-        public Roles Role { get; set; }
+        public string? Role { get; set; }
     }
-    public enum Roles
-    {
-        Manager,
-        TrafficWarden,
-        Citizen
-    }
+    //public enum Roles
+    //{
+    //    Manager,
+    //    TrafficWarden,
+    //    Citizen
+    //}
 }

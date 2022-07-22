@@ -37,8 +37,9 @@ namespace EChallanSystem.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Role")
-                        .HasColumnType("int");
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -71,7 +72,7 @@ namespace EChallanSystem.Migrations
 
                     b.HasIndex("VehicleId");
 
-                    b.ToTable("Chall");
+                    b.ToTable("Challans");
                 });
 
             modelBuilder.Entity("EChallanSystem.Models.ChallanEmail", b =>
