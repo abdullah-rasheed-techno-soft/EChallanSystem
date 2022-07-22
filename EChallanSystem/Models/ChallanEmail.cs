@@ -8,7 +8,8 @@ namespace EChallanSystem.Models
         public int Id { get; set; }
         public string? Subject { get; set; }
         public string? Message { get; set; }
+
         public int CitizenId { get; set; }
-        public Citizen? Citizen { get; set; }
+        public Citizen? Citizen { get; set; } = null;
     }
 }

@@ -9,7 +9,8 @@ namespace EChallanSystem.Models
         [MaxLength(30), MinLength(2)]
         public string? Name { get; set; }
         public ICollection<Challan>? Challans { get; set; }
-        public int CitizenId { get; set; } = 0;
+
+        public int CitizenId { get; set; }
         public Citizen? Citizen { get; set; } = null;
 
     }
