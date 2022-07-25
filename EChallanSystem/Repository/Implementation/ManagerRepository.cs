@@ -13,6 +13,7 @@ namespace EChallanSystem.Repository.Implementation
         public async Task<List<Manager>> AddManager(Manager newManager)
         {
             _context.Managers.Add(newManager);
+            _context.SaveChanges();
             return _context.Managers.ToList();
         }
 
