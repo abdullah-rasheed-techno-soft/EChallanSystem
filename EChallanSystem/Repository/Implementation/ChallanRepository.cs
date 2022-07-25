@@ -11,7 +11,7 @@ namespace EChallanSystem.Repository.Implementation
         {
             _context = context;
         }
-        public async Task<List<Challan>> AddChallan(Challan newChallan)
+        public async Task<List<Challan>> CreateChallan(Challan newChallan)
         {
             _context.Challans.Add(newChallan);
             _context.SaveChanges();
@@ -20,15 +20,19 @@ namespace EChallanSystem.Repository.Implementation
 
         public async Task<Challan> GetChallan(int id)
         {
-            var challan = _context.Challans.Include(c => c.Vehicle).Include(c => c.TrafficWarden).FirstOrDefault(m => m.Id == id);
+            var challan = _context.Challans.Include(c => c.Vehicle).ThenInclude(d=>d.Citizen).Include(c => c.TrafficWarden).ThenInclude(d=>d.User).FirstOrDefault(m => m.Id == id);
 
             return challan;
         }
 
         public async Task<List<Challan>> GetChallans()
         {
-            return _context.Challans.Include(c => c.Vehicle).Include(d => d.TrafficWarden).ToList();
+            return _context.Challans.Include(c => c.Vehicle).ThenInclude(d => d.Citizen).Include(c => c.TrafficWarden).ThenInclude(d => d.User).ToList();
         }
+        //public async Task<List<Challan>> PayChallan(int id)
+        //{
+        //   returbn
+        //}
     }
 }
 

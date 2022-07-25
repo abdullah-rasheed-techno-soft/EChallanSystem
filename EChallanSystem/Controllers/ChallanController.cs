@@ -35,9 +35,9 @@ namespace EChallanSystem.Controllers
             return Ok(challan);
         }
         [HttpPost]
-        public async Task<ActionResult<List<Challan>>> AddChallan(Challan newChallan)
+        public async Task<ActionResult<List<Challan>>> CreateChallan(Challan newChallan)
         {
-            var challan = await _challanRepository.AddChallan(newChallan);
+            var challan = await _challanRepository.CreateChallan(newChallan);
             return Ok(challan);
 
         }
