@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using EChallanSystem.Models;
+using EChallanSystem.Repository.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EChallanSystem.Controllers
@@ -7,36 +9,36 @@ namespace EChallanSystem.Controllers
     [ApiController]
     public class TrafficWardenController : ControllerBase
     {
-        private readonly ICitizenRepository _citizenRepository;
-        public CitizenController(ICitizenRepository citizenRepostiory)
+        private readonly ITrafficWardenRepository _trafficWardenRepository;
+        public TrafficWardenController(ITrafficWardenRepository trafficWardenRepostiory)
         {
-            _citizenRepository = citizenRepostiory;
+            _trafficWardenRepository = trafficWardenRepostiory;
         }
         [HttpGet("{id}")]
-        public async Task<ActionResult<Citizen>> GetCitizen(int id)
+        public async Task<ActionResult<TrafficWarden>> GetTrafficWarden(int id)
         {
-            var citizen = await _citizenRepository.GetCitizen(id);
-            if (citizen is null)
+            var trafficWarden = await _trafficWardenRepository.GetTrafficWarden(id);
+            if (trafficWarden is null)
             {
-                return NotFound("Citizens not found");
+                return NotFound("TrafficWardens not found");
             }
-            return Ok(citizen);
+            return Ok(trafficWarden);
         }
         [HttpGet]
-        public async Task<ActionResult<List<Citizen>>> GetCitizens()
+        public async Task<ActionResult<List<TrafficWarden>>> GetTrafficWardens()
         {
-            var citizen = await _citizenRepository.GetCitizens();
-            if (citizen is null)
+            var trafficWarden = await _trafficWardenRepository.GetTrafficWardens();
+            if (trafficWarden is null)
             {
-                return NotFound("Citizen not found");
+                return NotFound("TrafficWarden not found");
             }
-            return Ok(citizen);
+            return Ok(trafficWarden);
         }
         [HttpPost]
-        public async Task<ActionResult<List<Citizen>>> AddCitizen(Citizen newCitizen)
+        public async Task<ActionResult<List<TrafficWarden>>> AddTrafficWarden(TrafficWarden newTrafficWarden)
         {
-            var citizen = await _citizenRepository.AddCitizen(newCitizen);
-            return Ok(citizen);
+            var trafficWarden = await _trafficWardenRepository.AddTrafficWarden(newTrafficWarden);
+            return Ok(trafficWarden);
 
         }
     }
