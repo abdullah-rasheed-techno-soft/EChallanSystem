@@ -1,39 +1,66 @@
 ﻿using EChallanSystem.Models;
+using EChallanSystem.Repository.IServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace EChallanSystem.Controllers
 {
-    [Route("api/[controller]/[action]")] 
+    [Route("/[controller]/[action]")]
     [ApiController]
     public class ManagerController : ControllerBase
     {
-        private readonly AppDbContext _context;
-        public ManagerController(AppDbContext context)
+        private readonly IManagerRepository _managerRepository;
+        public ManagerController(IManagerRepository managerRepostiory)
         {
-            _context = context;
+            _managerRepository = managerRepostiory;
         }
-
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Manager>> GetManager(int id)
+        {
+            var manager =await _managerRepository.GetManager(id);
+            if(manager is null)
+            {
+                return NotFound("Manager not found");
+            }
+            return Ok(manager);
+        }
         [HttpGet]
         public async Task<ActionResult<List<Manager>>> GetManagers()
         {
-            return Ok(await _context.Managers.Include(c=>c.User).ToListAsync());
+            var manager =await _managerRepository.GetManagers();
+            if (manager is null)
+            {
+                return NotFound("Manager not found");
+            }
+            return Ok(manager);
         }
-        [HttpGet]
-        public async Task<ActionResult<List<ApplicationUser>>> GetManagersBy()
+        [HttpPost]
+        public async Task<ActionResult<List<Manager>>> AddManager(Manager newManager)
         {
-            return Ok(await _context.ApplicationUsers.Where(c=>c.Role=="Manager").ToListAsync());
+            var manager =await _managerRepository.AddManager(newManager);
+            return Ok(manager);
+
         }
-        //[HttpGet]  
+        //[HttpGet]
+        //public async Task<ActionResult<List<Manager>>> GetManagers()
+        //{
+        //    return Ok(await _context.Managers.Include(c=>c.User).ToListAsync());
+        //}
+        //[HttpGet]
+        //public async Task<ActionResult<List<ApplicationUser>>> GetManagersBy()
+        //{
+        //    return Ok(await _context.ApplicationUsers.Where(c=>c.Role=="Manager").ToListAsync());
+        //}
+        //[HttpGet]
         //public async Task<ActionResult<TrafficWarden>> GetTrafficWardens()
         //{
-        //    return Ok(await _context.TrafficWardens.Include(c => c.UserId).ToListAsync());
+        //    return Ok(await _context.TrafficWardens.Include(c => c.User).ToListAsync());
         //}
         //[HttpGet]
         //public async Task<ActionResult<Citizen>> GetCitizens()
         //{
-        //    return Ok(await _context.Citizens.Include(c => c.UserId).ToListAsync());
+        //    return Ok(await _context.Citizens.Include(c => c.User).ToListAsync());
         //}
 
     }
