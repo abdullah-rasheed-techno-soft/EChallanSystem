@@ -6,8 +6,8 @@ namespace EChallanSystem.DTO
     {
         [Key]
         public int Id { get; set; }
-        [Required]
-        [MaxLength(30), MinLength(2)]
+        [Required(ErrorMessage ="Vehicle name is required")]
+        [MaxLength(30,ErrorMessage ="Max Length should not exceed 30"), MinLength(2)]
         public string? Name { get; set; }
 
 
