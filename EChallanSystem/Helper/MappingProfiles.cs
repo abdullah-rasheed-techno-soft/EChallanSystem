@@ -14,6 +14,12 @@ namespace EChallanSystem.Helper
             CreateMap<ChallanDTO, Challan>();
             CreateMap<TrafficWardenDTO, TrafficWarden>();
             CreateMap<TrafficWarden, TrafficWardenDTO>();
+            CreateMap<VehicleDTO,Vehicle>();
+            CreateMap<Vehicle,VehicleDTO>();
+            CreateMap<ChallanEmailDTO, ChallanEmail>();
+            CreateMap<ChallanEmail, ChallanEmailDTO>();
+            CreateMap<PayDTO, Challan>();
+            CreateMap<Challan, PayDTO>();
         }
     }
 }

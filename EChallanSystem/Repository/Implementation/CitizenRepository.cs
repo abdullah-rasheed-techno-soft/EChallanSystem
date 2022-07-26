@@ -33,5 +33,9 @@ namespace EChallanSystem.Repository.Implementation
         {
             return await _context.Citizens.Include(c => c.User).ToListAsync();
         }
+        public bool CitizenExists(int id)
+        {
+            return _context.Citizens.Any(c => c.Id == id);
+        }
     }
 }

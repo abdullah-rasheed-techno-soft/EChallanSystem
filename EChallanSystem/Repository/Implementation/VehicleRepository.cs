@@ -11,9 +11,9 @@ namespace EChallanSystem.Repository.Implementation
         {
             _context = context;
         }
-        public async Task<List<Vehicle>> AddVehicle(int citizenId,Vehicle newVehicle)
+        public async Task<List<Vehicle>> AddVehicle(Vehicle newVehicle)
         {
-            var citizen=_context.Citizens.Where(a=>a.Id==citizenId).FirstOrDefault();
+      
 
             
             _context.Vehicles.Add(newVehicle);
@@ -23,14 +23,14 @@ namespace EChallanSystem.Repository.Implementation
 
         public async Task<Vehicle> GetVehicle(int id)
         {
-            var vehicle = _context.Vehicles.Include(c => c.Citizen).Include(d=>d.Challans).FirstOrDefault(m => m.Id == id);
+            var vehicle = _context.Vehicles.FirstOrDefault(m => m.Id == id);
 
             return vehicle;
         }
 
         public async Task<List<Vehicle>> GetVehicles()
         {
-            return _context.Vehicles.Include(c => c.Citizen).Include(d => d.Challans).ToList();
+            return _context.Vehicles.ToList();
         }
     }
 }

@@ -7,5 +7,6 @@ namespace EChallanSystem.Repository.Interfaces
         Task<List<TrafficWarden>> GetTrafficWardens();
         Task<TrafficWarden> GetTrafficWarden(int id);
         Task<List<TrafficWarden>> AddTrafficWarden(TrafficWarden newTrafficWarden);
+        bool TrafficWardenExists(int id);
     }
 }

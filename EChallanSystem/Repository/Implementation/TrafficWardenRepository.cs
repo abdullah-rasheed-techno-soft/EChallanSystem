@@ -29,5 +29,9 @@ namespace EChallanSystem.Repository.Implementation
         {
             return _context.TrafficWardens.Include(c => c.User).Include(d => d.Challans).ToList();
         }
+        public bool TrafficWardenExists(int id)
+        {
+            return _context.Citizens.Any(c => c.Id == id);
+        }
     }
 }

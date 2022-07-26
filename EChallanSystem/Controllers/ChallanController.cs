@@ -19,24 +19,30 @@ namespace EChallanSystem.Controllers
               _mapper = mapper;
         }
         [HttpGet("{id}")]
-        public async Task<ActionResult<Challan>> GetChallan(int id)
+        public async Task<ActionResult<ChallanDTO>> GetChallan(int id)
         {
             var challan = await _challanRepository.GetChallan(id);
-            if (challan is null)
-            {
-                return NotFound("Challans not found");
-            }
-            return Ok(challan);
-        }
-        [HttpGet]
-        public async Task<ActionResult<List<Challan>>> GetChallans()
-        {
-            var challan = await _challanRepository.GetChallans();
+            var challanDto = _mapper.Map<ChallanDTO>(challan);
             if (challan is null)
             {
                 return NotFound("Challan not found");
             }
-            return Ok(challan);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            return Ok(challanDto);
+        }
+        [HttpGet]
+        public async Task<ActionResult<List<ChallanDTO>>> GetChallans()
+        {
+            var challan = await _challanRepository.GetChallans();
+            var challanDto = _mapper.Map<List<ChallanDTO>>(challan);
+            if (challan is null)
+            {
+                return NotFound("Challans not found");
+            }
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            return Ok(challanDto);
         }
         [HttpPost]
         public async Task<ActionResult<List<Challan>>> CreateChallan(Challan newChallan)
@@ -45,15 +51,15 @@ namespace EChallanSystem.Controllers
             return Ok(challan);
 
         }
-        [HttpPut]
-        public IActionResult PayChallan(int id,[FromBody] ChallanDTO challan)
+        [HttpPut("{id}")]
+        public IActionResult PayChallan(int id,[FromBody] PayDTO challan)
         {
             if (challan == null)
                 return BadRequest(ModelState);
             
             if (!_challanRepository.ChallanExists(id))
             {
-                return NotFound();
+                return NotFound("This Challan doesnt exist");
             }
           
             if (!ModelState.IsValid)
@@ -61,12 +67,12 @@ namespace EChallanSystem.Controllers
                 return BadRequest();
             }
             var payChallan = _mapper.Map<Challan>(challan);
-            if (_challanRepository.PayChallan(id,payChallan))
+            if (!_challanRepository.PayChallan(id,payChallan))
             {
                 ModelState.AddModelError("", "Something went wrong");
                 return StatusCode(500, ModelState);
             }
-            return NoContent();
+            return Ok("Challan Paid Successfully");
         }
     }
 }

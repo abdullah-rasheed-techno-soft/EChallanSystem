@@ -6,6 +6,6 @@ namespace EChallanSystem.Repository.Interfaces
     {
         Task<List<Vehicle>> GetVehicles();
         Task<Vehicle> GetVehicle(int id);
-        Task<List<Vehicle>> AddVehicle(int citizenId,Vehicle newVehicle);
+        Task<List<Vehicle>> AddVehicle(Vehicle newVehicle);
     }
 }

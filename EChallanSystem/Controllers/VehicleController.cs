@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using EChallanSystem.DTO;
 using EChallanSystem.Models;
 using EChallanSystem.Repository.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -20,31 +21,46 @@ namespace EChallanSystem.Controllers
             _mapper = mapper;
         }
         [HttpGet("{id}")]
-        public async Task<ActionResult<Vehicle>> GetVehicle(int id)
+        public async Task<ActionResult<VehicleDTO>> GetVehicle(int id)
         {
             var vehicle = await _vehicleRepository.GetVehicle(id);
+            var vehicleDto = _mapper.Map<VehicleDTO>(vehicle);
             if (vehicle is null)
             {
                 return NotFound("Vehicle not found");
             }
-            return Ok(vehicle);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            return Ok(vehicleDto);
         }
         [HttpGet]
-        public async Task<ActionResult<List<Vehicle>>> GetVehicles()
+        public async Task<ActionResult<List<VehicleDTO>>> GetVehicles()
         {
             var vehicle = await _vehicleRepository.GetVehicles();
+            var vehicleDto = _mapper.Map<List<VehicleDTO>>(vehicle);
             if (vehicle is null)
             {
-                return NotFound("Vehicle not found");
+                return NotFound("Vehicles not found");
             }
-            return Ok(vehicle);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            return Ok(vehicleDto);
         }
         [HttpPost]
-        public async Task<ActionResult<List<Vehicle>>> AddVehicle(int citizenId, [FromBody]Vehicle newVehicle)
+        public async Task<ActionResult<List<VehicleDTO>>> AddVehicle(int citizenId, [FromBody]VehicleDTO newVehicle)
         {
-            var vehicle = await _vehicleRepository.AddVehicle(newVehicle);
-            return Ok(vehicle);
+            if (newVehicle == null)
+                return BadRequest(ModelState);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            var citizen = _citizenRepository.CitizenExists(citizenId);
+            if (!citizen)
+                return NotFound("Citizen doesnt exist");
+            var vehicleMap=_mapper.Map<Vehicle>(newVehicle);
+            vehicleMap.Citizen =await _citizenRepository.GetCitizen(citizenId);
 
+            await _vehicleRepository.AddVehicle(vehicleMap);
+            return Ok("Vehicle successfully added");
         }
     }
 }

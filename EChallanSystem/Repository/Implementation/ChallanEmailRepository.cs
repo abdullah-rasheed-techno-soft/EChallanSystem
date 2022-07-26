@@ -22,7 +22,7 @@ namespace EChallanSystem.Repository.Implementation
 
         public async Task<List<ChallanEmail>> GetChallanEmails()
         {
-            return _context.ChallanEmails.Include(c => c.Citizen).ToList();
+            return _context.ChallanEmails.ToList();
         }
     }
 }

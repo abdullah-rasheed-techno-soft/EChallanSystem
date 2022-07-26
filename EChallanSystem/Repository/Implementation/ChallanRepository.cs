@@ -20,18 +20,20 @@ namespace EChallanSystem.Repository.Implementation
 
         public async Task<Challan> GetChallan(int id)
         {
-            var challan = _context.Challans.Include(c => c.Vehicle).ThenInclude(d=>d.Citizen).Include(c => c.TrafficWarden).ThenInclude(d=>d.User).FirstOrDefault(m => m.Id == id);
+            var challan = _context.Challans.FirstOrDefault(m => m.Id == id);
 
             return challan;
         }
 
         public async Task<List<Challan>> GetChallans()
         {
-            return _context.Challans.Include(c => c.Vehicle).ThenInclude(d => d.Citizen).Include(c => c.TrafficWarden).ThenInclude(d => d.User).ToList();
+            return _context.Challans.ToList();
         }
         public bool PayChallan(int id,Challan challan)
         {
-            _context.Update(challan);
+            var UpdateChallan = _context.Challans.FirstOrDefault(m=>m.Id==id);
+            UpdateChallan.Fine = challan.Fine;
+            _context.Update(UpdateChallan);
             return Save();
         }
         public bool Save()

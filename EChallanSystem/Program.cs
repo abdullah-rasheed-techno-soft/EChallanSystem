@@ -3,6 +3,7 @@ using EChallanSystem.Repository.Implementation;
 using EChallanSystem.Repository.Interfaces;
 using EChallanSystem.Repository.IServices;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,8 +13,15 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddControllers().AddNewtonsoftJson();
-builder.Services.AddControllers().AddJsonOptions(x =>
-                x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+
+builder.Services.AddMvc()
+    .AddNewtonsoftJson(options => {
+        options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+    });
+
+builder.Services.AddControllers().AddJsonOptions
+    (x =>x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+
 builder.Services.AddScoped<IManagerRepository, ManagerRepository>();
 builder.Services.AddScoped<ICitizenRepository, CitizenRepository>();
 builder.Services.AddScoped<ITrafficWardenRepository, TrafficWardenRepository>();
