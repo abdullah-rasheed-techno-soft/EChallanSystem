@@ -11,8 +11,11 @@ namespace EChallanSystem.Repository.Implementation
         {
             _context = context;
         }
-        public async Task<List<Vehicle>> AddVehicle(Vehicle newVehicle)
+        public async Task<List<Vehicle>> AddVehicle(int citizenId,Vehicle newVehicle)
         {
+            var citizen=_context.Citizens.Where(a=>a.Id==citizenId).FirstOrDefault();
+
+            
             _context.Vehicles.Add(newVehicle);
             _context.SaveChanges();
             return _context.Vehicles.ToList();

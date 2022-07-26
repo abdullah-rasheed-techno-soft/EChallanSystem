@@ -1,4 +1,6 @@
-﻿using EChallanSystem.Models;
+﻿using AutoMapper;
+using EChallanSystem.DTO;
+using EChallanSystem.Models;
 using EChallanSystem.Repository.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,35 +12,49 @@ namespace EChallanSystem.Controllers
     public class TrafficWardenController : ControllerBase
     {
         private readonly ITrafficWardenRepository _trafficWardenRepository;
-        public TrafficWardenController(ITrafficWardenRepository trafficWardenRepostiory)
+        private readonly IMapper _mapper;
+        public TrafficWardenController(ITrafficWardenRepository trafficWardenRepostiory,IMapper mapper)
         {
             _trafficWardenRepository = trafficWardenRepostiory;
+            _mapper = mapper;
         }
         [HttpGet("{id}")]
-        public async Task<ActionResult<TrafficWarden>> GetTrafficWarden(int id)
+        public async Task<ActionResult<TrafficWardenDTO>> GetTrafficWarden(int id)
         {
             var trafficWarden = await _trafficWardenRepository.GetTrafficWarden(id);
+            var trafficWardenDto = _mapper.Map<TrafficWardenDTO>(trafficWarden);
             if (trafficWarden is null)
             {
-                return NotFound("TrafficWardens not found");
+                return NotFound("Traffic Warden not found");
             }
-            return Ok(trafficWarden);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            return Ok(trafficWardenDto);
         }
         [HttpGet]
-        public async Task<ActionResult<List<TrafficWarden>>> GetTrafficWardens()
+        public async Task<ActionResult<List<TrafficWardenDTO>>> GetTrafficWardens()
         {
             var trafficWarden = await _trafficWardenRepository.GetTrafficWardens();
+            var trafficWardenDto = _mapper.Map<List<TrafficWardenDTO>>(trafficWarden);
             if (trafficWarden is null)
             {
-                return NotFound("TrafficWarden not found");
+                return NotFound("Traffic Warden not found");
             }
-            return Ok(trafficWarden);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            return Ok(trafficWardenDto);
         }
         [HttpPost]
-        public async Task<ActionResult<List<TrafficWarden>>> AddTrafficWarden(TrafficWarden newTrafficWarden)
+        public async Task<ActionResult<List<TrafficWardenDTO>>> AddTrafficWarden([FromBody]TrafficWardenDTO newTrafficWarden)
         {
-            var trafficWarden = await _trafficWardenRepository.AddTrafficWarden(newTrafficWarden);
-            return Ok(trafficWarden);
+            if (newTrafficWarden == null)
+                return BadRequest(ModelState);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var trafficWardenDto = _mapper.Map<TrafficWarden>(newTrafficWarden);
+            await _trafficWardenRepository.AddTrafficWarden(trafficWardenDto);
+            return Ok("Successfully created");
 
         }
     }

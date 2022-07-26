@@ -12,6 +12,8 @@ namespace EChallanSystem.Helper
             CreateMap<CitizenDTO, Citizen>();
             CreateMap<Challan, ChallanDTO>();
             CreateMap<ChallanDTO, Challan>();
+            CreateMap<TrafficWardenDTO, TrafficWarden>();
+            CreateMap<TrafficWarden, TrafficWardenDTO>();
         }
     }
 }

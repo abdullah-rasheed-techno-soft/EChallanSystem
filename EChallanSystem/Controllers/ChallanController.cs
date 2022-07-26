@@ -45,7 +45,7 @@ namespace EChallanSystem.Controllers
             return Ok(challan);
 
         }
-        [HttpPut("{id}")]
+        [HttpPut]
         public IActionResult PayChallan(int id,[FromBody] ChallanDTO challan)
         {
             if (challan == null)
