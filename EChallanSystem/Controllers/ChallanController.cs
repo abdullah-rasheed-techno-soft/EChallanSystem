@@ -45,22 +45,23 @@ namespace EChallanSystem.Controllers
             return Ok(challan);
 
         }
-        [HttpPut]
-        public IActionResult PayChallan(int ChallanId,[FromBody] ChallanDTO challan)
+        [HttpPut("{id}")]
+        public IActionResult PayChallan(int id,[FromBody] ChallanDTO challan)
         {
             if (challan == null)
                 return BadRequest(ModelState);
-
-            if ( _challanRepository.GetChallan(ChallanId) == null)
+            
+            if (!_challanRepository.ChallanExists(id))
             {
                 return NotFound();
             }
+          
             if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
             var payChallan = _mapper.Map<Challan>(challan);
-            if (_challanRepository.PayChallan(payChallan))
+            if (_challanRepository.PayChallan(id,payChallan))
             {
                 ModelState.AddModelError("", "Something went wrong");
                 return StatusCode(500, ModelState);

@@ -9,6 +9,7 @@ namespace EChallanSystem.Helper
         public MappingProfiles()
         {
             CreateMap<Citizen, CitizenDTO>();
+            CreateMap<CitizenDTO, Citizen>();
             CreateMap<Challan, ChallanDTO>();
             CreateMap<ChallanDTO, Challan>();
         }

@@ -20,7 +20,7 @@ namespace EChallanSystem.Repository.Implementation
 
         public async Task<Citizen> GetCitizen(int id)
         {
-            var citizen = _context.Citizens.Include(c => c.User).Include(c=>c.Vehicle).Include(c=>c.ChallanEmails).FirstOrDefault(m => m.Id == id);
+            var citizen = _context.Citizens.Include(c => c.User).FirstOrDefault(m => m.Id == id);
 
             return citizen;
         }

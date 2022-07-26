@@ -39,7 +39,8 @@ namespace EChallanSystem.Controllers
         public async Task<ActionResult<List<Manager>>> AddManager(Manager newManager)
         {
             var manager =await _managerRepository.AddManager(newManager);
-            return Ok(manager);
+            if (!ModelState.IsValid) return BadRequest();
+            return Created("Successfully added ",manager);
 
         }
         //[HttpGet]

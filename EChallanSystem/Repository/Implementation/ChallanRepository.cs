@@ -29,7 +29,7 @@ namespace EChallanSystem.Repository.Implementation
         {
             return _context.Challans.Include(c => c.Vehicle).ThenInclude(d => d.Citizen).Include(c => c.TrafficWarden).ThenInclude(d => d.User).ToList();
         }
-        public bool PayChallan(Challan challan)
+        public bool PayChallan(int id,Challan challan)
         {
             _context.Update(challan);
             return Save();
@@ -38,6 +38,10 @@ namespace EChallanSystem.Repository.Implementation
         {
             var saved=_context.SaveChanges();
             return saved > 0 ? true:false;
+        }
+        public bool ChallanExists(int id)
+        {
+            return _context.Challans.Any(c => c.Id == id);
         }
     }
 }
