@@ -22,6 +22,8 @@ namespace EChallanSystem.Controllers
             {
                 return NotFound("Citizens not found");
             }
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
             return Ok(citizen);
         }
         [HttpGet]
@@ -32,6 +34,8 @@ namespace EChallanSystem.Controllers
             {
                 return NotFound("Citizen not found");
             }
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
             return Ok(citizen);
         }
         [HttpPost]

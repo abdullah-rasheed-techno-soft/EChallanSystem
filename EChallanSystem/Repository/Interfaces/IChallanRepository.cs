@@ -8,6 +8,6 @@ namespace EChallanSystem.Repository.Interfaces
         Task<Challan> GetChallan(int id);
         Task<List<Challan>> CreateChallan(Challan newChallan);
 
-        Task<Challan> PayChallan(int id);
+        //Task<Challan> PayChallan(int id);
     }
 }
