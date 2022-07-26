@@ -29,10 +29,16 @@ namespace EChallanSystem.Repository.Implementation
         {
             return _context.Challans.Include(c => c.Vehicle).ThenInclude(d => d.Citizen).Include(c => c.TrafficWarden).ThenInclude(d => d.User).ToList();
         }
-        //public async Task<List<Challan>> PayChallan(int id)
-        //{
-        //   returbn
-        //}
+        public bool PayChallan(Challan challan)
+        {
+            _context.Update(challan);
+            return Save();
+        }
+        public bool Save()
+        {
+            var saved=_context.SaveChanges();
+            return saved > 0 ? true:false;
+        }
     }
 }
 

@@ -25,9 +25,13 @@ namespace EChallanSystem.Repository.Implementation
             return citizen;
         }
 
+        //public async Task<List<Citizen>> GetCitizens()
+        //{
+        //    return _context.Citizens.Include(c => c.User).Include(d => d.Vehicle).Include(e => e.ChallanEmails).ToList();
+        //}
         public async Task<List<Citizen>> GetCitizens()
         {
-            return _context.Citizens.Include(c => c.User).Include(d => d.Vehicle).Include(e => e.ChallanEmails).ToList();
+            return await _context.Citizens.Include(c => c.User).ToListAsync();
         }
     }
 }
