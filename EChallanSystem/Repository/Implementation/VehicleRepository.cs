@@ -32,5 +32,9 @@ namespace EChallanSystem.Repository.Implementation
         {
             return _context.Vehicles.ToList();
         }
+        public bool VehicleExists(int id)
+        {
+            return _context.Vehicles.Any(c => c.Id == id);
+        }
     }
 }
