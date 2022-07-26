@@ -60,7 +60,7 @@ namespace EChallanSystem.Controllers
             if (!vehicle)
                 return NotFound("Vehicle doesnt exist");
             if(!trafficWarden)
-                return NotFound("Citizen doesnt exist");
+                return NotFound("Traffic warden doesnt exist");
 
             var challanMap = _mapper.Map<Challan>(newChallan);
             challanMap.Vehicle = await _vehicleRepository.GetVehicle(vehicleId);

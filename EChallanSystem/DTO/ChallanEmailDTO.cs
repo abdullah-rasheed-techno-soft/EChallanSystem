@@ -6,9 +6,9 @@ namespace EChallanSystem.DTO
     {
         [Key]
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage ="Subject is required")]
         public string? Subject { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Message is required")]
         public string? Message { get; set; }
 
         public int CitizenId { get; set; }
