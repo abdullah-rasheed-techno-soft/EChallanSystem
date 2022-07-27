@@ -18,7 +18,7 @@ namespace EChallanSystem.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Manager>> GetManager(int id)
         {
-            var manager =await _managerRepository.GetManager(id);
+            Manager manager =await _managerRepository.GetManager(id);
             if(manager is null)
             {
                 return NotFound("Manager not found");
@@ -28,7 +28,7 @@ namespace EChallanSystem.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Manager>>> GetManagers()
         {
-            var manager =await _managerRepository.GetManagers();
+            List<Manager> manager =await _managerRepository.GetManagers();
             if (manager is null)
             {
                 return NotFound("Manager not found");
@@ -38,7 +38,7 @@ namespace EChallanSystem.Controllers
         [HttpPost]
         public async Task<ActionResult<List<Manager>>> AddManager(Manager newManager)
         {
-            var manager =await _managerRepository.AddManager(newManager);
+            List<Manager> manager =await _managerRepository.AddManager(newManager);
             if (!ModelState.IsValid) return BadRequest();
             return Created("Successfully added ",manager);
 

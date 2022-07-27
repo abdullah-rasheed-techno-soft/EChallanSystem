@@ -20,7 +20,7 @@ namespace EChallanSystem.Repository.Implementation
 
         public async Task<TrafficWarden> GetTrafficWarden(int id)
         {
-            var trafficWarden = _context.TrafficWardens.Include(c => c.User).Include(d=>d.Challans).FirstOrDefault(m => m.Id == id);
+            TrafficWarden trafficWarden = _context.TrafficWardens.Include(c => c.User).Include(d=>d.Challans).FirstOrDefault(m => m.Id == id);
 
             return trafficWarden;
         }

@@ -23,7 +23,7 @@ namespace EChallanSystem.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<CitizenDTO>> GetCitizen(int id)
         {
-            var citizen = await _citizenRepository.GetCitizen(id);
+            Citizen citizen = await _citizenRepository.GetCitizen(id);
             var citizenDto = _mapper.Map<CitizenDTO>(citizen);
             if (citizen is null)
             {
@@ -36,7 +36,7 @@ namespace EChallanSystem.Controllers
         [HttpGet]
         public async Task<ActionResult<List<CitizenDTO>>> GetCitizens()
         {
-            var citizen = await _citizenRepository.GetCitizens();
+            List<Citizen> citizen = await _citizenRepository.GetCitizens();
             var citizenDto = _mapper.Map<List<CitizenDTO>>(citizen);
             if (citizen is null)
             {

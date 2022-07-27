@@ -13,7 +13,7 @@ namespace EChallanSystem.Models
         public DbSet<TrafficWarden> TrafficWardens { get; set; }
         public DbSet<Challan> Challans { get; set; }
         public DbSet<Vehicle> Vehicles { get; set; }
-        public DbSet<ChallanEmail> ChallanEmails { get; set; }
+      
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

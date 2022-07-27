@@ -25,7 +25,7 @@ namespace EChallanSystem.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<ChallanDTO>> GetChallan(int id)
         {
-            var challan = await _challanRepository.GetChallan(id);
+            Challan challan = await _challanRepository.GetChallan(id);
             var challanDto = _mapper.Map<ChallanDTO>(challan);
             if (challan is null)
             {
@@ -69,10 +69,9 @@ namespace EChallanSystem.Controllers
             return Ok("Challan successfully created");
         }
         [HttpPut("{id}")]
-        public IActionResult PayChallan(int id,[FromBody] PayDTO challan)
+        public IActionResult PayChallan(int id)
         {
-            if (challan == null)
-                return BadRequest(ModelState);
+    
             
             if (!_challanRepository.ChallanExists(id))
             {
@@ -83,11 +82,10 @@ namespace EChallanSystem.Controllers
             {
                 return BadRequest();
             }
-            var payChallan = _mapper.Map<Challan>(challan);
-            if (!_challanRepository.PayChallan(id,payChallan))
+          
+            if (!_challanRepository.PayChallan(id))
             {
-                ModelState.AddModelError("", "Something went wrong");
-                return StatusCode(500, ModelState);
+                return NotFound("Challan has already been paid");
             }
             return Ok("Challan Paid Successfully");
         }

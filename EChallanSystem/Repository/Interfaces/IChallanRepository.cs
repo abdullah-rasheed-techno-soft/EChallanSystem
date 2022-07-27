@@ -8,7 +8,7 @@ namespace EChallanSystem.Repository.Interfaces
         Task<Challan> GetChallan(int id);
         Task<List<Challan>> CreateChallan(Challan newChallan);
 
-        bool PayChallan(int id,Challan challan);
+        bool PayChallan(int id);
         bool ChallanExists(int id);
         bool Save();
     }

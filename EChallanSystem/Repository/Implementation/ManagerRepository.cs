@@ -19,7 +19,7 @@ namespace EChallanSystem.Repository.Implementation
 
         public async Task<Manager> GetManager(int id)
         {
-            var manager=_context.Managers.Include(c=>c.User).FirstOrDefault(m => m.Id == id);
+            Manager manager=_context.Managers.Include(c=>c.User).FirstOrDefault(m => m.Id == id);
            
             return manager;
         }

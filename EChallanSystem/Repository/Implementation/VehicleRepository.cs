@@ -23,7 +23,7 @@ namespace EChallanSystem.Repository.Implementation
 
         public async Task<Vehicle> GetVehicle(int id)
         {
-            var vehicle = _context.Vehicles.FirstOrDefault(m => m.Id == id);
+            Vehicle vehicle = _context.Vehicles.FirstOrDefault(m => m.Id == id);
 
             return vehicle;
         }

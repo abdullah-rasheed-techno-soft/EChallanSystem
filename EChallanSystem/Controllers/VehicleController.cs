@@ -23,7 +23,7 @@ namespace EChallanSystem.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<VehicleDTO>> GetVehicle(int id)
         {
-            var vehicle = await _vehicleRepository.GetVehicle(id);
+            Vehicle vehicle = await _vehicleRepository.GetVehicle(id);
             var vehicleDto = _mapper.Map<VehicleDTO>(vehicle);
             if (vehicle is null)
             {
@@ -36,7 +36,7 @@ namespace EChallanSystem.Controllers
         [HttpGet]
         public async Task<ActionResult<List<VehicleDTO>>> GetVehicles()
         {
-            var vehicle = await _vehicleRepository.GetVehicles();
+            List<Vehicle> vehicle = await _vehicleRepository.GetVehicles();
             var vehicleDto = _mapper.Map<List<VehicleDTO>>(vehicle);
             if (vehicle is null)
             {

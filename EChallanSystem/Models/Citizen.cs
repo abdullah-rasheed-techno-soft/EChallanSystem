@@ -9,6 +9,6 @@ namespace EChallanSystem.Models
         public int UserId { get; set; }
         public ApplicationUser? User { get; set; }
         public ICollection<Vehicle>? Vehicle { get; set; }
-        public ICollection<ChallanEmail>? ChallanEmails { get; set; }
+
     }
 }

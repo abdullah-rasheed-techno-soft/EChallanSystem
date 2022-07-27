@@ -21,7 +21,7 @@ namespace EChallanSystem.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<TrafficWardenDTO>> GetTrafficWarden(int id)
         {
-            var trafficWarden = await _trafficWardenRepository.GetTrafficWarden(id);
+            TrafficWarden trafficWarden = await _trafficWardenRepository.GetTrafficWarden(id);
             var trafficWardenDto = _mapper.Map<TrafficWardenDTO>(trafficWarden);
             if (trafficWarden is null)
             {
@@ -34,7 +34,7 @@ namespace EChallanSystem.Controllers
         [HttpGet]
         public async Task<ActionResult<List<TrafficWardenDTO>>> GetTrafficWardens()
         {
-            var trafficWarden = await _trafficWardenRepository.GetTrafficWardens();
+            List<TrafficWarden> trafficWarden = await _trafficWardenRepository.GetTrafficWardens();
             var trafficWardenDto = _mapper.Map<List<TrafficWardenDTO>>(trafficWarden);
             if (trafficWarden is null)
             {

@@ -20,7 +20,7 @@ namespace EChallanSystem.Repository.Implementation
 
         public async Task<Challan> GetChallan(int id)
         {
-            var challan = _context.Challans.FirstOrDefault(m => m.Id == id);
+            Challan challan = _context.Challans.FirstOrDefault(m => m.Id == id);
 
             return challan;
         }
@@ -29,12 +29,17 @@ namespace EChallanSystem.Repository.Implementation
         {
             return _context.Challans.ToList();
         }
-        public bool PayChallan(int id,Challan challan)
+        public bool PayChallan(int id)
         {
-            var UpdateChallan = _context.Challans.FirstOrDefault(m=>m.Id==id);
-            UpdateChallan.Fine = challan.Fine;
-            _context.Update(UpdateChallan);
-            return Save();
+            Challan UpdateChallan = _context.Challans.FirstOrDefault(m=>m.Id==id);
+            if (UpdateChallan.IsPaid==false)
+            {
+                UpdateChallan.IsPaid = true;
+                _context.Update(UpdateChallan);
+                return Save();
+
+            }
+            return false;
         }
         public bool Save()
         {
