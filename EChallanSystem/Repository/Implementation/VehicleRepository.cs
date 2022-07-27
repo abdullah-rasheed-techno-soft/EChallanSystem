@@ -28,9 +28,9 @@ namespace EChallanSystem.Repository.Implementation
             return vehicle;
         }
 
-        public async Task<List<Vehicle>> GetVehicles()
+        public async Task<List<Vehicle>> GetVehiclesByCitizenId(int id)
         {
-            return _context.Vehicles.ToList();
+            return _context.Vehicles.Where(b => b.CitizenId == id).ToList();
         }
         public bool VehicleExists(int id)
         {

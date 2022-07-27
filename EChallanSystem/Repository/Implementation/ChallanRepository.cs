@@ -13,21 +13,25 @@ namespace EChallanSystem.Repository.Implementation
         }
         public async Task<List<Challan>> CreateChallan(Challan newChallan)
         {
-            _context.Challans.Add(newChallan);
-            _context.SaveChanges();
-            return _context.Challans.ToList();
+             _context.Challans.Add(newChallan);
+             _context.SaveChanges();
+            return await _context.Challans.ToListAsync();
         }
 
-        public async Task<Challan> GetChallan(int id)
+        public async Task<Challan> GetChallanBySpecificId(int id)
         {
-            Challan challan = _context.Challans.FirstOrDefault(m => m.Id == id);
+            Challan challan =_context.Challans.FirstOrDefault(m => m.Id == id);
 
             return challan;
         }
 
-        public async Task<List<Challan>> GetChallans()
+        public async Task<List<Challan>> GetChallanByVehicleId(int id)
         {
-            return _context.Challans.ToList();
+            return _context.Challans.Where(b=>b.VehicleId==id).ToList();
+        }
+        public async Task<List<Challan>> GetChallanByWardenId(int id)
+        {
+            return _context.Challans.Where(b => b.TrafficWardenId == id).ToList();
         }
         public bool PayChallan(int id)
         {

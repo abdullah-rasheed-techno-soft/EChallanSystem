@@ -23,9 +23,9 @@ namespace EChallanSystem.Controllers
             _trafficWardenRepository = trafficWardenRepository;
         }
         [HttpGet("{id}")]
-        public async Task<ActionResult<ChallanDTO>> GetChallan(int id)
+        public async Task<ActionResult<ChallanDTO>> GetChallanBySpecificId(int id)
         {
-            Challan challan = await _challanRepository.GetChallan(id);
+            Challan challan = await _challanRepository.GetChallanBySpecificId(id);
             var challanDto = _mapper.Map<ChallanDTO>(challan);
             if (challan is null)
             {
@@ -35,14 +35,37 @@ namespace EChallanSystem.Controllers
                 return BadRequest(ModelState);
             return Ok(challanDto);
         }
-        [HttpGet]
-        public async Task<ActionResult<List<ChallanDTO>>> GetChallans()
+        [HttpGet("{id}")]
+        public async Task<ActionResult<List<ChallanDTO>>> GetChallanByVehicleId(int id)
         {
-            var challan = await _challanRepository.GetChallans();
-            var challanDto = _mapper.Map<List<ChallanDTO>>(challan);
-            if (challan is null)
+            var vehicle =_vehicleRepository.VehicleExists(id);
+            if (!vehicle)
             {
-                return NotFound("Challans not found");
+                return NotFound("The vehicle does not exist");
+            }
+            List<Challan> challan = await _challanRepository.GetChallanByVehicleId(id);
+            var challanDto = _mapper.Map<List<ChallanDTO>>(challan);
+            if (!challan.Any())
+            {
+                return NotFound("The vehicle does not have any challans");
+            }
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            return Ok(challanDto);
+        }
+        [HttpGet("{id}")]
+        public async Task<ActionResult<List<ChallanDTO>>> GetChallanByWardenId(int id)
+        {
+            var warden = _trafficWardenRepository.TrafficWardenExists(id);
+            if (!warden)
+            {
+                return NotFound("The traffic warden does not exist");
+            }
+            List<Challan> challan = await _challanRepository.GetChallanByWardenId(id);
+            var challanDto = _mapper.Map<List<ChallanDTO>>(challan);
+            if (!challan.Any())
+            {
+                return NotFound("This traffic warden does not have any challans");
             }
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);

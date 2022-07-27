@@ -21,7 +21,7 @@ namespace EChallanSystem.Controllers
             _mapper = mapper;
         }
         [HttpGet("{id}")]
-        public async Task<ActionResult<VehicleDTO>> GetVehicle(int id)
+        public async Task<ActionResult<VehicleDTO>> GetVehicleBySpecificId(int id)
         {
             Vehicle vehicle = await _vehicleRepository.GetVehicle(id);
             var vehicleDto = _mapper.Map<VehicleDTO>(vehicle);
@@ -33,14 +33,19 @@ namespace EChallanSystem.Controllers
                 return BadRequest(ModelState);
             return Ok(vehicleDto);
         }
-        [HttpGet]
-        public async Task<ActionResult<List<VehicleDTO>>> GetVehicles()
+        [HttpGet("{id}")]
+        public async Task<ActionResult<List<VehicleDTO>>> GetVehiclesByCitizenId(int id)
         {
-            List<Vehicle> vehicle = await _vehicleRepository.GetVehicles();
+            var citizen = _citizenRepository.CitizenExists(id);
+            if (!citizen)
+            {
+                return NotFound("The Citizen does not exist");
+            }
+            List<Vehicle> vehicle = await _vehicleRepository.GetVehiclesByCitizenId(id);
             var vehicleDto = _mapper.Map<List<VehicleDTO>>(vehicle);
             if (vehicle is null)
             {
-                return NotFound("Vehicles not found");
+                return NotFound("This Citizen does not have any Vehicles");
             }
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
