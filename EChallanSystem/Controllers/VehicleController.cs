@@ -52,17 +52,17 @@ namespace EChallanSystem.Controllers
             return Ok(vehicleDto);
         }
         [HttpPost]
-        public async Task<ActionResult<List<VehicleDTO>>> AddVehicle(int citizenId, [FromBody]VehicleDTO newVehicle)
+        public async Task<ActionResult<List<VehicleDTO>>> AddVehicle( [FromBody]VehicleDTO newVehicle)
         {
             if (newVehicle == null)
                 return BadRequest(ModelState);
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            var citizen = _citizenRepository.CitizenExists(citizenId);
+            var citizen = _citizenRepository.CitizenExists(newVehicle.CitizenId);
             if (!citizen)
                 return NotFound("Citizen doesnt exist");
             var vehicleMap=_mapper.Map<Vehicle>(newVehicle);
-            vehicleMap.Citizen =await _citizenRepository.GetCitizen(citizenId);
+            vehicleMap.Citizen =await _citizenRepository.GetCitizen(newVehicle.CitizenId);
 
             await _vehicleRepository.AddVehicle(vehicleMap);
             return Ok("Vehicle successfully added");

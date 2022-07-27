@@ -72,22 +72,22 @@ namespace EChallanSystem.Controllers
             return Ok(challanDto);
         }
         [HttpPost]
-        public async Task<ActionResult<List<ChallanDTO>>> CreateChallan(int vehicleId,int trafficWardenId ,[FromBody]ChallanDTO newChallan)
+        public async Task<ActionResult<List<ChallanDTO>>> CreateChallan([FromBody]ChallanDTO newChallan)
         {
             if (newChallan == null)
                 return BadRequest(ModelState);
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            var vehicle = _vehicleRepository.VehicleExists(vehicleId);
-            var trafficWarden = _trafficWardenRepository.TrafficWardenExists(trafficWardenId);
+            var vehicle = _vehicleRepository.VehicleExists(newChallan.VehicleId);
+            var trafficWarden = _trafficWardenRepository.TrafficWardenExists(newChallan.TrafficWardenId);
             if (!vehicle)
                 return NotFound("Vehicle doesnt exist");
             if(!trafficWarden)
                 return NotFound("Traffic warden doesnt exist");
 
             var challanMap = _mapper.Map<Challan>(newChallan);
-            challanMap.Vehicle = await _vehicleRepository.GetVehicle(vehicleId);
-            challanMap.TrafficWarden = await _trafficWardenRepository.GetTrafficWarden(trafficWardenId);
+            challanMap.Vehicle = await _vehicleRepository.GetVehicle(newChallan.VehicleId);
+            challanMap.TrafficWarden = await _trafficWardenRepository.GetTrafficWarden(newChallan.TrafficWardenId);
             await _challanRepository.CreateChallan(challanMap);
             return Ok("Challan successfully created");
         }
