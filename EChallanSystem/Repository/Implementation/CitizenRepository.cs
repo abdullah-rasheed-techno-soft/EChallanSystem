@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EChallanSystem.Repository.Implementation
 {
-    public class CitizenRepository:ICitizenRepository
+    public class CitizenRepository : ICitizenRepository
     {
         private readonly AppDbContext _context;
         public CitizenRepository(AppDbContext context)
@@ -37,5 +37,6 @@ namespace EChallanSystem.Repository.Implementation
         {
             return _context.Citizens.Any(c => c.Id == id);
         }
+      
     }
 }

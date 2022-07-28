@@ -6,7 +6,7 @@ namespace EChallanSystem.Repository.Interfaces
     {
         Task<List<Challan>> GetChallanByVehicleId(int id);
         Task<List<Challan>> GetChallanByWardenId(int id);
-        Task<Challan> GetChallanBySpecificId(int id);
+        Task<Challan> GetChallanById(int id);
         Task<List<Challan>> CreateChallan(Challan newChallan);
 
         bool PayChallan(int id);

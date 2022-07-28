@@ -8,7 +8,9 @@ namespace EChallanSystem.Repository.Interfaces
         Task<Citizen> GetCitizen(int id);
         Task<List<Citizen>> AddCitizen(Citizen newCitizen);
         bool CitizenExists(int id);
+   
 
-        
+
+
     }
 }

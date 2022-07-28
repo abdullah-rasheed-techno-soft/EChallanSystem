@@ -1,3 +1,4 @@
+using EChallanSystem.Extensions;
 using EChallanSystem.Models;
 using EChallanSystem.Repository.Implementation;
 using EChallanSystem.Repository.Interfaces;
@@ -39,9 +40,11 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+app.ConfigureExceptionHandler();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+   
     app.UseSwagger();
     app.UseSwaggerUI();
 }

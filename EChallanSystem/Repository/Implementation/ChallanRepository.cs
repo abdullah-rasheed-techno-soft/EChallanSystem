@@ -18,7 +18,7 @@ namespace EChallanSystem.Repository.Implementation
             return await _context.Challans.ToListAsync();
         }
 
-        public async Task<Challan> GetChallanBySpecificId(int id)
+        public async Task<Challan> GetChallanById(int id)
         {
             Challan challan =_context.Challans.FirstOrDefault(m => m.Id == id);
 

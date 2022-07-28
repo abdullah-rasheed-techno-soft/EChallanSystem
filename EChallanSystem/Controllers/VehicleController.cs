@@ -21,7 +21,7 @@ namespace EChallanSystem.Controllers
             _mapper = mapper;
         }
         [HttpGet("{id}")]
-        public async Task<ActionResult<VehicleDTO>> GetVehicleBySpecificId(int id)
+        public async Task<ActionResult<VehicleDTO>> GetVehicleById(int id)
         {
             Vehicle vehicle = await _vehicleRepository.GetVehicle(id);
             var vehicleDto = _mapper.Map<VehicleDTO>(vehicle);
