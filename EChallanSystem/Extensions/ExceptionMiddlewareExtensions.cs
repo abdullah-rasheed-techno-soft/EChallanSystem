@@ -21,7 +21,8 @@ namespace EChallanSystem.Extensions
                         await context.Response.WriteAsync(new ErrorDetails()
                         {
                             StatusCode = context.Response.StatusCode,
-                            Message = $"Internal Server Error. {contextFeature.Error}"
+                            Message = $"Internal Server Error, {contextFeature.Error.Message} ",
+                            Stacktrace = $"{contextFeature.Error.StackTrace }" 
                         }.ToString());
                     }
                 });

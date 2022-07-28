@@ -21,41 +21,61 @@ namespace EChallanSystem.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<TrafficWardenDTO>> GetTrafficWarden(int id)
         {
-            TrafficWarden trafficWarden = await _trafficWardenRepository.GetTrafficWarden(id);
-            var trafficWardenDto = _mapper.Map<TrafficWardenDTO>(trafficWarden);
-            if (trafficWarden is null)
+            try
             {
-                return NotFound("Traffic Warden not found");
+                TrafficWarden trafficWarden = await _trafficWardenRepository.GetTrafficWarden(id);
+                var trafficWardenDto = _mapper.Map<TrafficWardenDTO>(trafficWarden);
+                if (trafficWarden is null)
+                {
+                    return NotFound("Traffic Warden not found");
+                }
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
+                return Ok(trafficWardenDto);
             }
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-            return Ok(trafficWardenDto);
+            catch (Exception ex)
+            {
+                throw new Exception("Exception occured ", ex);
+            }
         }
         [HttpGet]
         public async Task<ActionResult<List<TrafficWardenDTO>>> GetTrafficWardens()
         {
-            List<TrafficWarden> trafficWarden = await _trafficWardenRepository.GetTrafficWardens();
-            var trafficWardenDto = _mapper.Map<List<TrafficWardenDTO>>(trafficWarden);
-            if (trafficWarden is null)
+            try
             {
-                return NotFound("Traffic Warden not found");
+                List<TrafficWarden> trafficWarden = await _trafficWardenRepository.GetTrafficWardens();
+                var trafficWardenDto = _mapper.Map<List<TrafficWardenDTO>>(trafficWarden);
+                if (trafficWarden is null)
+                {
+                    return NotFound("Traffic Warden not found");
+                }
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
+                return Ok(trafficWardenDto);
             }
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-            return Ok(trafficWardenDto);
+            catch (Exception ex)
+            {
+                throw new Exception("Exception occured ", ex);
+            }
         }
         [HttpPost]
         public async Task<ActionResult<List<TrafficWardenDTO>>> AddTrafficWarden([FromBody]TrafficWardenDTO newTrafficWarden)
         {
-            if (newTrafficWarden == null)
-                return BadRequest(ModelState);
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            try
+            {
+                if (newTrafficWarden == null)
+                    return BadRequest(ModelState);
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
 
-            var trafficWardenDto = _mapper.Map<TrafficWarden>(newTrafficWarden);
-            await _trafficWardenRepository.AddTrafficWarden(trafficWardenDto);
-            return Ok("Successfully created");
-
+                var trafficWardenDto = _mapper.Map<TrafficWarden>(newTrafficWarden);
+                await _trafficWardenRepository.AddTrafficWarden(trafficWardenDto);
+                return Ok("Successfully created");
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Exception occured ", ex);
+            }
         }
     }
 }

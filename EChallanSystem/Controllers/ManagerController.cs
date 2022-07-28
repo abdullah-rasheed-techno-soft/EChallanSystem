@@ -18,30 +18,50 @@ namespace EChallanSystem.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Manager>> GetManager(int id)
         {
-            Manager manager =await _managerRepository.GetManager(id);
-            if(manager is null)
+            try
             {
-                return NotFound("Manager not found");
+                Manager manager = await _managerRepository.GetManager(id);
+                if (manager is null)
+                {
+                    return NotFound("Manager not found");
+                }
+                return Ok(manager);
             }
-            return Ok(manager);
+            catch (Exception ex)
+            {
+                throw new Exception("Exception occured ", ex);
+            }
         }
         [HttpGet]
         public async Task<ActionResult<List<Manager>>> GetManagers()
         {
-            List<Manager> manager =await _managerRepository.GetManagers();
-            if (manager is null)
+            try
             {
-                return NotFound("Manager not found");
+                List<Manager> manager = await _managerRepository.GetManagers();
+                if (manager is null)
+                {
+                    return NotFound("Manager not found");
+                }
+                return Ok(manager);
             }
-            return Ok(manager);
+            catch (Exception ex)
+            {
+                throw new Exception("Exception occured ", ex);
+            }
         }
         [HttpPost]
         public async Task<ActionResult<List<Manager>>> AddManager(Manager newManager)
         {
-            List<Manager> manager =await _managerRepository.AddManager(newManager);
-            if (!ModelState.IsValid) return BadRequest();
-            return Created("Successfully added ",manager);
-
+            try
+            {
+                List<Manager> manager = await _managerRepository.AddManager(newManager);
+                if (!ModelState.IsValid) return BadRequest();
+                return Created("Successfully added ", manager);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Exception occured ", ex);
+            }
         }
         //[HttpGet]
         //public async Task<ActionResult<List<Manager>>> GetManagers()

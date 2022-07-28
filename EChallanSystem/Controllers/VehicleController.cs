@@ -23,49 +23,70 @@ namespace EChallanSystem.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<VehicleDTO>> GetVehicleById(int id)
         {
-            Vehicle vehicle = await _vehicleRepository.GetVehicle(id);
-            var vehicleDto = _mapper.Map<VehicleDTO>(vehicle);
-            if (vehicle is null)
+            try
             {
-                return NotFound("Vehicle not found");
+                Vehicle vehicle = await _vehicleRepository.GetVehicle(id);
+                var vehicleDto = _mapper.Map<VehicleDTO>(vehicle);
+                if (vehicle is null)
+                {
+                    return NotFound("Vehicle not found");
+                }
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
+                return Ok(vehicleDto);
             }
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-            return Ok(vehicleDto);
+            catch (Exception ex)
+            {
+                throw new Exception("Exception occured ", ex);
+            }
         }
         [HttpGet("{id}")]
         public async Task<ActionResult<List<VehicleDTO>>> GetVehiclesByCitizenId(int id)
         {
-            var citizen = _citizenRepository.CitizenExists(id);
-            if (!citizen)
+            try
             {
-                return NotFound("The Citizen does not exist");
+                var citizen = _citizenRepository.CitizenExists(id);
+                if (!citizen)
+                {
+                    return NotFound("The Citizen does not exist");
+                }
+                List<Vehicle> vehicle = await _vehicleRepository.GetVehiclesByCitizenId(id);
+                var vehicleDto = _mapper.Map<List<VehicleDTO>>(vehicle);
+                if (vehicle is null)
+                {
+                    return NotFound("This Citizen does not have any Vehicles");
+                }
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
+                return Ok(vehicleDto);
             }
-            List<Vehicle> vehicle = await _vehicleRepository.GetVehiclesByCitizenId(id);
-            var vehicleDto = _mapper.Map<List<VehicleDTO>>(vehicle);
-            if (vehicle is null)
+            catch (Exception ex)
             {
-                return NotFound("This Citizen does not have any Vehicles");
+                throw new Exception("Exception occured ", ex);
             }
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-            return Ok(vehicleDto);
         }
         [HttpPost]
         public async Task<ActionResult<List<VehicleDTO>>> AddVehicle( [FromBody]VehicleDTO newVehicle)
         {
-            if (newVehicle == null)
-                return BadRequest(ModelState);
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-            var citizen = _citizenRepository.CitizenExists(newVehicle.CitizenId);
-            if (!citizen)
-                return NotFound("Citizen doesnt exist");
-            var vehicleMap=_mapper.Map<Vehicle>(newVehicle);
-            vehicleMap.Citizen =await _citizenRepository.GetCitizen(newVehicle.CitizenId);
+            try
+            {
+                if (newVehicle == null)
+                    return BadRequest(ModelState);
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
+                var citizen = _citizenRepository.CitizenExists(newVehicle.CitizenId);
+                if (!citizen)
+                    return NotFound("Citizen doesnt exist");
+                var vehicleMap = _mapper.Map<Vehicle>(newVehicle);
+                vehicleMap.Citizen = await _citizenRepository.GetCitizen(newVehicle.CitizenId);
 
-            await _vehicleRepository.AddVehicle(vehicleMap);
-            return Ok("Vehicle successfully added");
+                await _vehicleRepository.AddVehicle(vehicleMap);
+                return Ok("Vehicle successfully added");
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Exception occured ", ex);
+            }
         }
     }
 }
