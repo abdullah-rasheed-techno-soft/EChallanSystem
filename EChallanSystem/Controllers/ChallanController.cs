@@ -32,6 +32,7 @@ namespace EChallanSystem.Controllers
         {
             try
             {
+          
                 Challan challan = await _challanRepository.GetChallanById(id);
                 var challanDto = _mapper.Map<ChallanDTO>(challan);
              
@@ -103,6 +104,7 @@ namespace EChallanSystem.Controllers
         {
             try
             {
+              
                 if (newChallan == null)
                     return BadRequest(ModelState);
                 if (!ModelState.IsValid)
