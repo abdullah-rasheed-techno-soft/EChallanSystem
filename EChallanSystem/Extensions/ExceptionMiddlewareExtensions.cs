@@ -1,5 +1,6 @@
 ﻿using EChallanSystem.Services;
 using Microsoft.AspNetCore.Diagnostics;
+using NLog;
 using System.Net;
 
 namespace EChallanSystem.Extensions

@@ -5,6 +5,7 @@ using EChallanSystem.Repository.Interfaces;
 using EChallanSystem.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace EChallanSystem.Controllers
 {
@@ -12,13 +13,14 @@ namespace EChallanSystem.Controllers
     [ApiController]
     public class ChallanController : ControllerBase
     {
+        private readonly ILogger<ChallanController> _logger;
         private readonly IChallanRepository _challanRepository;
         private readonly IVehicleRepository _vehicleRepository;
         private readonly ICitizenRepository _citizenRepository;
         private readonly ITrafficWardenRepository _trafficWardenRepository;
         private readonly IMapper _mapper;
         private readonly IEmailService _emailService;
-        public ChallanController(IChallanRepository challanRepostiory,IMapper mapper, IVehicleRepository vehicleRepository, ITrafficWardenRepository trafficWardenRepository, IEmailService emailService,ICitizenRepository citizenRepository)
+        public ChallanController(IChallanRepository challanRepostiory,IMapper mapper, IVehicleRepository vehicleRepository, ITrafficWardenRepository trafficWardenRepository, IEmailService emailService, ICitizenRepository citizenRepository, ILogger<ChallanController> logger)
         {
             _challanRepository = challanRepostiory;
             _mapper = mapper;
@@ -26,26 +28,35 @@ namespace EChallanSystem.Controllers
             _trafficWardenRepository = trafficWardenRepository;
             _emailService = emailService;
             _citizenRepository = citizenRepository;
+            _logger = logger;
         }
         [HttpGet("{id}")]
         public async Task<ActionResult<ChallanDTO>> GetChallanById(int id)
         {
             try
             {
-          
+                _logger.LogInformation($"Getting Challan by Id {id} invoked");
                 Challan challan = await _challanRepository.GetChallanById(id);
                 var challanDto = _mapper.Map<ChallanDTO>(challan);
              
                 if (challan is null)
                 {
+                    _logger.LogError($"Challan with id {id} not found");
                     return NotFound("Challan not found");
                 }
                 if (!ModelState.IsValid)
+                {
+                    _logger.LogError(" Model state not valid");
+
                     return BadRequest(ModelState);
+                }
+                _logger.LogInformation($"Challan data with id {id} recevied");
+
                 return Ok(challanDto);
             }
             catch(Exception ex)
             {
+                _logger.LogError(ex, "Stopped program because of some exception");
                 throw new Exception("Exception occured ",ex);
             }
         }
@@ -54,23 +65,34 @@ namespace EChallanSystem.Controllers
         {
             try
             {
+                _logger.LogInformation($"Getting Challan by Vehicle Id {id} invoked");
+
                 var vehicle = _vehicleRepository.VehicleExists(id);
                 if (!vehicle)
                 {
+                    _logger.LogError($"Challan with Id {id} not found");
                     return NotFound("The vehicle does not exist");
                 }
                 List<Challan> challan = await _challanRepository.GetChallanByVehicleId(id);
                 var challanDto = _mapper.Map<List<ChallanDTO>>(challan);
                 if (!challan.Any())
                 {
+                    _logger.LogError("The vehicle does not have any challans");
+
                     return NotFound("The vehicle does not have any challans");
                 }
                 if (!ModelState.IsValid)
+                {
+                    _logger.LogError(" Model state not valid");
                     return BadRequest(ModelState);
+
+                }
                 return Ok(challanDto);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Stopped program because of some exception");
+
                 throw new Exception("Exception occured ", ex);
             }
         }
