@@ -3,6 +3,7 @@ using EChallanSystem.DTO;
 using EChallanSystem.Models;
 using EChallanSystem.Repository.Interfaces;
 using EChallanSystem.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -30,7 +31,7 @@ namespace EChallanSystem.Controllers
             _citizenRepository = citizenRepository;
             _logger = logger;
         }
-        [HttpGet("{id}")]
+        [HttpGet("{id}"),Authorize]
         public async Task<ActionResult<ChallanDTO>> GetChallanById(int id)
         {
             try

@@ -16,8 +16,12 @@ namespace EChallanSystem.Helper
             CreateMap<TrafficWarden, TrafficWardenDTO>();
             CreateMap<VehicleDTO,Vehicle>();
             CreateMap<Vehicle,VehicleDTO>();
-        
-         
+            CreateMap<ApplicationUser, ApplicationUserDTO>();
+            CreateMap<ApplicationUserDTO, ApplicationUser>();
+            CreateMap<ApplicationUser, LoginDTO>();
+            CreateMap<LoginDTO, ApplicationUser>();
+
+
         }
     }
 }

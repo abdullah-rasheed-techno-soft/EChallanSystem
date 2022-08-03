@@ -59,7 +59,26 @@ namespace EChallanSystem.Controllers
             }
         }
         [HttpPost]
-        public async Task<ActionResult<List<TrafficWardenDTO>>> AddTrafficWarden([FromBody]TrafficWardenDTO newTrafficWarden)
+        public async Task<ActionResult<List<TrafficWardenDTO>>> RegisterTrafficWarden([FromBody]TrafficWardenDTO newTrafficWarden)
+        {
+            try
+            {
+                if (newTrafficWarden == null)
+                    return BadRequest(ModelState);
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
+
+                var trafficWardenDto = _mapper.Map<TrafficWarden>(newTrafficWarden);
+                await _trafficWardenRepository.AddTrafficWarden(trafficWardenDto);
+                return Ok("Successfully created");
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Exception occured ", ex);
+            }
+        }
+        [HttpPost]
+        public async Task<ActionResult<List<TrafficWardenDTO>>> LoginTrafficWarden([FromBody] TrafficWardenDTO newTrafficWarden)
         {
             try
             {

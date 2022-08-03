@@ -50,7 +50,7 @@ namespace EChallanSystem.Controllers
             }
         }
         [HttpPost]
-        public async Task<ActionResult<List<Manager>>> AddManager(Manager newManager)
+        public async Task<ActionResult<List<Manager>>> LoginManager(Manager newManager)
         {
             try
             {
