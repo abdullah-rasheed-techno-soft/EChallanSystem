@@ -2,6 +2,7 @@
 using EChallanSystem.DTO;
 using EChallanSystem.Models;
 using EChallanSystem.Repository.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,7 +21,7 @@ namespace EChallanSystem.Controllers
             _citizenRepository = citizenRepository;
             _mapper = mapper;
         }
-        [HttpGet("{id}")]
+        [HttpGet("{id}"), Authorize(Roles = "TrafficWarden")]
         public async Task<ActionResult<VehicleDTO>> GetVehicleById(int id)
         {
             try
@@ -40,7 +41,7 @@ namespace EChallanSystem.Controllers
                 throw new Exception("Exception occured ", ex);
             }
         }
-        [HttpGet("{id}")]
+        [HttpGet("{id}"), Authorize(Roles = "Citizen,TrafficWarden")]
         public async Task<ActionResult<List<VehicleDTO>>> GetVehiclesByCitizenId(int id)
         {
             try
@@ -65,7 +66,7 @@ namespace EChallanSystem.Controllers
                 throw new Exception("Exception occured ", ex);
             }
         }
-        [HttpPost]
+        [HttpPost, Authorize(Roles = "Citizen,TrafficWarden")]
         public async Task<ActionResult<List<VehicleDTO>>> AddVehicle( [FromBody]VehicleDTO newVehicle)
         {
             try

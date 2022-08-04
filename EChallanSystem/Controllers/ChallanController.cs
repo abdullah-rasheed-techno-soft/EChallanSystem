@@ -31,7 +31,7 @@ namespace EChallanSystem.Controllers
             _citizenRepository = citizenRepository;
             _logger = logger;
         }
-        [HttpGet("{id}"),Authorize]
+        [HttpGet("{id}"),Authorize(Roles ="Manager,TrafficWarden")]
         public async Task<ActionResult<ChallanDTO>> GetChallanById(int id)
         {
             try
@@ -61,7 +61,7 @@ namespace EChallanSystem.Controllers
                 throw new Exception("Exception occured ",ex);
             }
         }
-        [HttpGet("{id}")]
+        [HttpGet("{id}"),Authorize(Roles = "TrafficWarden")]
         public async Task<ActionResult<List<ChallanDTO>>> GetChallanByVehicleId(int id)
         {
             try
@@ -97,7 +97,7 @@ namespace EChallanSystem.Controllers
                 throw new Exception("Exception occured ", ex);
             }
         }
-        [HttpGet("{id}")]
+        [HttpGet("{id}"), Authorize(Roles = "TrafficWarden")]
         public async Task<ActionResult<List<ChallanDTO>>> GetChallanByWardenId(int id)
         {
             try
@@ -122,7 +122,7 @@ namespace EChallanSystem.Controllers
                 throw new Exception("Exception occured ", ex);
             }
         }
-        [HttpPost]
+        [HttpPost, Authorize(Roles = "TrafficWarden")]
         public async Task<ActionResult<List<ChallanDTO>>> CreateChallan([FromBody]ChallanDTO newChallan)
         {
             try
@@ -157,7 +157,7 @@ namespace EChallanSystem.Controllers
                 throw new Exception("Exception occured ", ex);
             }
         }
-        [HttpPut("{id}")]
+        [HttpPut("{id}"), Authorize(Roles = "Citizen")]
         public IActionResult PayChallan(int id)
         {
 

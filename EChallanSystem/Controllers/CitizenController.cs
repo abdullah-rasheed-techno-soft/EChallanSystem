@@ -3,6 +3,8 @@ using EChallanSystem.DTO;
 using EChallanSystem.Helper;
 using EChallanSystem.Models;
 using EChallanSystem.Repository.Interfaces;
+using EChallanSystem.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -18,15 +20,17 @@ namespace EChallanSystem.Controllers
         private readonly ICitizenRepository _citizenRepository;
         private readonly IApplicationUserRepo _applicationUserRepo;
         private readonly IConfiguration _configuration;
+        private readonly IUserService _userService;
         private readonly IMapper _mapper;
-        public CitizenController(ICitizenRepository citizenRepostiory,IMapper mapper, IApplicationUserRepo applicationUserRepo, IConfiguration configuration)
+        public CitizenController(ICitizenRepository citizenRepostiory,IMapper mapper, IApplicationUserRepo applicationUserRepo, IConfiguration configuration,IUserService userService)
         {
             _citizenRepository = citizenRepostiory;
             _mapper = mapper;
+            _userService = userService;
             _applicationUserRepo = applicationUserRepo;
             _configuration = configuration;
         }
-        [HttpGet("{id}")] 
+        [HttpGet("{id}"),Authorize(Roles="Manager")] 
         public async Task<ActionResult<CitizenDTO>> GetCitizen(int id)
         {
             try
@@ -46,7 +50,8 @@ namespace EChallanSystem.Controllers
                 throw new Exception("Exception occured ", ex);
             }
         }
-        [HttpGet]
+     
+        [HttpGet, Authorize(Roles = "Manager")]
         public async Task<ActionResult<List<CitizenDTO>>> GetCitizens()
         {
             try
@@ -66,87 +71,6 @@ namespace EChallanSystem.Controllers
                 throw new Exception("Exception occured ", ex);
             }
         }
-        [HttpPost]
-        public async Task<ActionResult<List<CitizenDTO>>> RegisterCitizen([FromBody]CitizenDTO newCitizen)
-        {
-            try
-            {
-                if (newCitizen == null)
-                    return BadRequest(ModelState);
-                if (!ModelState.IsValid)
-                    return BadRequest(ModelState);
 
-                var citizenDto = _mapper.Map<Citizen>(newCitizen);
-                citizenDto.User.Role = "Citizen";
-                await _citizenRepository.AddCitizen(citizenDto);
-                return Ok("Successfully Created");
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Exception occured ", ex);
-            }
-        }
-        [HttpPost]
-        public async Task<ActionResult<ApplicationUser>> LoginCitizen([FromBody] LoginDTO citizenLogin)
-        {
-            try
-            {
-                if (citizenLogin == null)
-                    return BadRequest(ModelState);
-                if (!ModelState.IsValid)
-                    return BadRequest(ModelState);
-
-                var applicationUserDto = _mapper.Map<ApplicationUser>(citizenLogin);
-                ApplicationUser check= await _applicationUserRepo.GetUserByEmail(citizenLogin.Email);
-                if (check == null)
-                {
-                    return NotFound("Incorrect Email");
-                }
-                if (check.Role=="Citizen")
-                {
-                    if (check.Password == citizenLogin.Password)
-                    {
-                        string token = CreateToken(check);
-                        return Ok(token);
-                    }
-                    else
-                    {
-                        return NotFound("Incorrect Password");
-                    }
-                }
-                else
-                {
-                    return NotFound("Incorrect Email");
-
-                }
-
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Exception occured ", ex);
-            }
-        }
-        private string CreateToken(ApplicationUser user)
-        {
-            List<Claim> claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Email,user.Email),
-                new Claim(ClaimTypes.Name,user.Name),
-                new Claim(ClaimTypes.Role,user.Role),
-            };
-            var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(
-                _configuration.GetSection("AppSettings:Token").Value));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
-
-            var token = new JwtSecurityToken(
-                claims: claims,
-                expires: DateTime.Now.AddDays(1),
-                signingCredentials: creds);
-
-            var jwt = new JwtSecurityTokenHandler().WriteToken(token);
-
-            return jwt;
-           
-        }
     }
 }

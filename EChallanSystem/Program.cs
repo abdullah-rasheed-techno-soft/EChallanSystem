@@ -45,7 +45,9 @@ try
     builder.Services.AddScoped<ITrafficWardenRepository, TrafficWardenRepository>();
     builder.Services.AddScoped<IVehicleRepository, VehicleRepository>();
     builder.Services.AddScoped<IChallanRepository, ChallanRepository>();
+    builder.Services.AddScoped<IUserService, UserService>();
     builder.Services.AddScoped<IApplicationUserRepo, ApplicationUserRepo>();
+    builder.Services.AddHttpContextAccessor();
     builder.Services.AddDbContext<AppDbContext>(options =>
     {
         options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
