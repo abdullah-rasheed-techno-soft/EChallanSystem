@@ -9,6 +9,6 @@ namespace EChallanSystem.DTO
         public int Id { get; set; }
 
     
-        public ApplicationUser? User { get; set; }
+        public ApplicationUserDTO? User { get; set; }
     }
 }

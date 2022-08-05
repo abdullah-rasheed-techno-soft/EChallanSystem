@@ -6,7 +6,7 @@ namespace EChallanSystem.DTO
     {
 
         [Required]
-        public string? Name { get; set; }
+        public string? UserName { get; set; }
         [Required]
         [RegularExpression(".+\\@.+\\..+", ErrorMessage = "Please Enter valid email")]
         public string? Email { get; set; }

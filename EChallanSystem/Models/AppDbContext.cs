@@ -1,23 +1,25 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace EChallanSystem.Models
 {
-    public class AppDbContext:DbContext
+    public class AppDbContext : IdentityDbContext<ApplicationUser>
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options): base(options)       
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
 
         }
-        public DbSet<Manager> Managers { get; set; }
-        public DbSet<Citizen> Citizens { get; set; }
-        public DbSet<TrafficWarden> TrafficWardens { get; set; }
-        public DbSet<Challan> Challans { get; set; }
-        public DbSet<Vehicle> Vehicles { get; set; }
-      
-        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+        //public DbSet<Manager> Managers { get; set; }
+        //public DbSet<Citizen> Citizens { get; set; }
+        //public DbSet<TrafficWarden> TrafficWardens { get; set; }
+        //public DbSet<Challan> Challans { get; set; }
+        //public DbSet<Vehicle> Vehicles { get; set; }
+
+        //public DbSet<ApplicationUser> ApplicationUsers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             foreach (var foreignKey in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
             {
                 foreignKey.DeleteBehavior = DeleteBehavior.Restrict;
@@ -51,7 +53,7 @@ namespace EChallanSystem.Models
             //    });
             //    b.HasOne(c => c.Citizen);
             //    b.HasMany(c => c.Challans);
-               
+
             //});
             //modelBuilder.Entity<ChallanEmail>(b =>
             //{
@@ -96,7 +98,7 @@ namespace EChallanSystem.Models
             //        Role = Roles.TrafficWarden
             //    });
             //});
-        
+
 
 
 
@@ -133,6 +135,7 @@ namespace EChallanSystem.Models
             //modelBuilder.Entity<Citizen>().HasOne(a=>a.vehicle).WithOne(b=>b.citizen).HasForeignKey<Vehicle>(b=>b.CitizenId);
             //modelBuilder.Entity<TrafficWarden>().HasMany(a => a.challans).WithOne(b => b.warden);
             //modelBuilder.Entity<Vehicle>().HasMany(a => a.challans).WithOne(b => b.vehicle);
+
 
         }
     }

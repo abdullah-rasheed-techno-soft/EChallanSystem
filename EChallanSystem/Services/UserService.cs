@@ -1,24 +1,48 @@
-﻿using System.Security.Claims;
+﻿
+using EChallanSystem.Constants;
+using EChallanSystem.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
+using System.Security.Claims;
 
 namespace EChallanSystem.Services
 {
     public class UserService : IUserService
     {
-        private readonly IHttpContextAccessor _httpContextAccessor;
-        public UserService(IHttpContextAccessor httpContextAccessor)
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly JWT _jwt;
+        public UserService(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IOptions<JWT> jwt)
         {
-            _httpContextAccessor = httpContextAccessor;
+            _userManager = userManager;
+            _roleManager = roleManager;
+            _jwt = jwt.Value;
         }
-        public string GetName()
-        
+
+        public async Task<string> RegisterManagerAsync(RegisterModel model)
+        {
+            var user = new ApplicationUser
             {
-                var result = string.Empty;
-                if (_httpContextAccessor.HttpContext != null)
+                UserName = model.Username,
+                Email = model.Email,
+                FirstName = model.FirstName,
+                LastName = model.LastName
+
+            };
+            var userWithSameEmail = await _userManager.FindByEmailAsync(model.Email);
+            if (userWithSameEmail == null)
+            {
+                var result = await _userManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
                 {
-                    result = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Name);
+                    await _userManager.AddToRoleAsync(user, Authorization.default_role.ToString());
                 }
-                return result;
+                return $"User Registered with username {user.UserName}";
             }
-        
+            else
+            {
+                return $"Email {user.Email} is already registered.";
+            }
+        }
     }
 }

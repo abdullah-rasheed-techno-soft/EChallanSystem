@@ -10,8 +10,8 @@ namespace EChallanSystem.Models
         public string? Name { get; set; }
         public ICollection<Challan>? Challans { get; set; }
 
-        public int CitizenId { get; set; }
-        public Citizen? Citizen { get; set; }
+        //public int CitizenId { get; set; }
+        public ApplicationUser? Citizen { get; set; }
 
     }
 }

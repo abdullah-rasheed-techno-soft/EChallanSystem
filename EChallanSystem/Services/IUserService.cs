@@ -1,7 +1,9 @@
-﻿namespace EChallanSystem.Services
+﻿using EChallanSystem.Models;
+
+namespace EChallanSystem.Services
 {
     public interface IUserService
     {
-        string GetName();
+        Task<string> RegisterManagerAsync(RegisterModel model);
     }
 }

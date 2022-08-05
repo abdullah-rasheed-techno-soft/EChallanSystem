@@ -12,8 +12,8 @@ namespace EChallanSystem.Models
 
         public Vehicle? Vehicle { get; set; }  
         public bool IsPaid { get; set; }= false;
-        public int TrafficWardenId { get; set; }
-        public TrafficWarden? TrafficWarden { get; set; }
+        //public int TrafficWardenId { get; set; }
+        public ApplicationUser? TrafficWarden { get; set; }
 
     }
 }
